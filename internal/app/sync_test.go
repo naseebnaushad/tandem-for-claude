@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 
@@ -117,8 +118,9 @@ func TestApplyCopiesAndClearsAccountFields(t *testing.T) {
 	if len(f.read(a1, c1, "")["bridgeSessionIds"].([]any)) != 1 {
 		t.Fatal("source changed")
 	}
+	// Windows has no POSIX permission bits; files there are protected by the profile's ACLs.
 	st, _ := os.Stat(filepath.Join(f.folder(a2, ""), "local_"+c1+".json"))
-	if st.Mode().Perm() != 0o600 {
+	if runtime.GOOS != "windows" && st.Mode().Perm() != 0o600 {
 		t.Fatal(st.Mode())
 	}
 	files, _ := os.ReadDir(f.folder(a2, ""))
@@ -267,7 +269,7 @@ func TestBackupAndRestoreKeepsCurrent(t *testing.T) {
 	id, err := f.backups.Create(dirs, "test")
 	must(t, err)
 	st, _ := os.Stat(filepath.Join(f.backups.Dir, id+".tar.gz"))
-	if st.Mode().Perm() != 0o600 {
+	if runtime.GOOS != "windows" && st.Mode().Perm() != 0o600 {
 		t.Fatal(st.Mode())
 	}
 	f.put(a1, c1, entry(c1, 100, map[string]any{"title": "after"}), "")
