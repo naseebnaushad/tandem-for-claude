@@ -1,0 +1,26 @@
+# Secrets (company rule §7)
+.env*
+!.env.example
+*.pem
+*.key
+*.pfx
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# macOS
+.DS_Store
+
+# Build outputs
+bin/
+frontend/node_modules/
+frontend/dist/*
+!frontend/dist/.gitkeep
+frontend/bindings/
+*.syso
+build/windows/nsis/MicrosoftEdgeWebview2Setup.exe
+build/linux/appimage/build/
+dist-*
+.task/
