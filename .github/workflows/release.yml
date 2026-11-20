@@ -1,11 +1,16 @@
-# Builds unsigned release packages for macOS, Windows and Linux when a
-# version tag (vX.Y.Z) is pushed, and attaches them to a draft GitHub release.
+# Builds unsigned packages for macOS, Windows and Linux. On a version tag
+# (vX.Y.Z, created only by /promote) they are attached to a draft GitHub
+# release; on feature branches they are kept as run artifacts for testing.
 # Unsigned on purpose (CR-0.1.0-02 D14); the README explains the first-run step.
 name: Release
 
 on:
   push:
     tags: ["v*"]
+    # Test builds for feature branches: packages are attached to the run as
+    # artifacts; only a version tag creates a GitHub Release.
+    branches: ["feature/**"]
+    paths-ignore: ["documents/**", "**.md"]
   workflow_dispatch:
 
 permissions:
