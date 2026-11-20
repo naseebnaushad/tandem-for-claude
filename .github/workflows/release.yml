@@ -29,7 +29,7 @@ jobs:
             name: macos
           - os: windows-latest
             name: windows
-          - os: ubuntu-22.04
+          - os: ubuntu-24.04
             name: linux
     runs-on: ${{ matrix.os }}
     timeout-minutes: 40
@@ -43,7 +43,7 @@ jobs:
           node-version: 22
       - name: Linux build dependencies
         if: matrix.name == 'linux'
-        run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev build-essential pkg-config
+        run: sudo apt-get update && sudo apt-get install -y libgtk-4-dev libwebkitgtk-6.0-dev build-essential pkg-config
       - name: Install Wails CLI
         run: go install github.com/wailsapp/wails/v3/cmd/wails3@${{ env.WAILS_VERSION }}
       - name: Test

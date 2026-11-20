@@ -28,7 +28,7 @@ Get the latest release from this repository's **Releases** page:
 |---|---|
 | macOS (Apple Silicon and Intel) | `tandem-for-claude-<version>-macos-universal.zip` |
 | Windows 10/11 (x64) | `…-windows-x64-setup.exe` (installer) or `…-windows-x64-portable.exe` |
-| Linux (x86_64) | `…-linux-x86_64.AppImage` or `….tar.gz` |
+| Linux (x86_64) | `…-linux-x86_64.AppImage` or `….tar.gz` (needs GTK 4 and WebKitGTK 6.0, e.g. Ubuntu 24.04+, Fedora 40+) |
 
 The builds are **not code-signed**, so the first start needs one extra step:
 - **macOS:** unzip, move *Tandem for Claude* to Applications, then right-click it → **Open**
@@ -118,7 +118,7 @@ Prerequisites: Go 1.26+, Node.js 22+, and the Wails CLI:
 ```bash
 go install github.com/wailsapp/wails/v3/cmd/wails3@v3.1.0
 ```
-Linux also needs `libgtk-3-dev` and `libwebkit2gtk-4.1-dev`.
+Linux also needs `libgtk-4-dev` and `libwebkitgtk-6.0-dev` (Ubuntu 24.04 or newer).
 
 Run in development mode:
 ```bash
