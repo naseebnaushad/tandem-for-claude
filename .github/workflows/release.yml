@@ -1,0 +1,91 @@
+# Builds unsigned release packages for macOS, Windows and Linux when a
+# version tag (vX.Y.Z) is pushed, and attaches them to a draft GitHub release.
+# Unsigned on purpose (CR-0.1.0-02 D14); the README explains the first-run step.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  WAILS_VERSION: v3.1.0
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            name: macos
+          - os: windows-latest
+            name: windows
+          - os: ubuntu-22.04
+            name: linux
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Linux build dependencies
+        if: matrix.name == 'linux'
+        run: sudo apt-get update && sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.1-dev build-essential pkg-config
+      - name: Install Wails CLI
+        run: go install github.com/wailsapp/wails/v3/cmd/wails3@${{ env.WAILS_VERSION }}
+      - name: Test
+        run: go test ./internal/...
+      - name: Version
+        shell: bash
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_ENV"
+
+      - name: Package (macOS, universal)
+        if: matrix.name == 'macos'
+        run: |
+          wails3 task darwin:package:universal APP_VERSION="$VERSION"
+          mv bin/tandem.app "bin/Tandem for Claude.app"
+          ditto -c -k --keepParent "bin/Tandem for Claude.app" "dist-tandem-for-claude-$VERSION-macos-universal.zip"
+
+      - name: Package (Windows)
+        if: matrix.name == 'windows'
+        shell: bash
+        run: |
+          wails3 task windows:package INSTALL_SCOPE=user APP_VERSION="$VERSION"
+          cp bin/tandem.exe "dist-tandem-for-claude-$VERSION-windows-x64-portable.exe"
+          cp build/windows/nsis/*-installer.exe "dist-tandem-for-claude-$VERSION-windows-x64-setup.exe"
+
+      - name: Package (Linux)
+        if: matrix.name == 'linux'
+        run: |
+          wails3 task linux:create:appimage APP_VERSION="$VERSION"
+          cp bin/*.AppImage "dist-tandem-for-claude-$VERSION-linux-x86_64.AppImage"
+          tar -czf "dist-tandem-for-claude-$VERSION-linux-x86_64.tar.gz" -C bin tandem
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.name }}
+          path: dist-*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+      - name: Draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd out && sha256sum dist-* > SHA256SUMS.txt
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft --title "Tandem for Claude $GITHUB_REF_NAME" --notes "Unsigned build. See the README for the first-run step on macOS and Windows." dist-* SHA256SUMS.txt
