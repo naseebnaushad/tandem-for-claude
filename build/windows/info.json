@@ -1,0 +1,17 @@
+{
+	"fixed": {
+		"file_version": "0.1.0",
+		"product_version": "0.1.0"
+	},
+	"info": {
+		"0409": {
+			"FileVersion": "0.1.0",
+			"ProductVersion": "0.1.0",
+			"CompanyName": "Tandem for Claude contributors",
+			"FileDescription": "Use several Claude seats side by side and keep every Code-tab chat",
+			"LegalCopyright": "(c) 2026, Tandem for Claude contributors. MIT licence.",
+			"ProductName": "Tandem for Claude",
+			"Comments": "Not affiliated with Anthropic."
+		}
+	}
+}

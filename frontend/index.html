@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Only this app's own files run here; no remote content, no inline script (CR-02 D16). -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' ws://localhost:* ws://127.0.0.1:* wails:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+  <link rel="stylesheet" href="/style.css" />
+  <title>Tandem for Claude</title>
+</head>
+<body>
+  <header class="top">
+    <h1>Tandem for Claude</h1>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="profiles" aria-selected="true">Profiles</button>
+      <button role="tab" data-tab="sync">Sync</button>
+      <button role="tab" data-tab="backups">Backups</button>
+      <button role="tab" data-tab="settings">Settings</button>
+    </nav>
+  </header>
+
+  <div id="notice" class="notice" role="status" hidden></div>
+
+  <main>
+    <section id="tab-profiles" class="tab">
+      <div class="row between">
+        <p class="muted">Each profile is its own Claude window or terminal with its own sign-in. Every profile sees every Code-tab chat.</p>
+        <button id="new-profile" class="primary">New profile</button>
+      </div>
+      <p id="no-claude" class="warn" hidden>Claude desktop wasn't found on this computer. Terminal profiles still work.</p>
+      <div id="profiles" class="cards"></div>
+    </section>
+
+    <section id="tab-sync" class="tab" hidden>
+      <div class="panel">
+        <div class="row between">
+          <div>
+            <div class="big" id="sync-headline">-</div>
+            <div class="muted" id="sync-sub"></div>
+          </div>
+          <button id="sync-now" class="primary">Sync now</button>
+        </div>
+        <p class="muted small">New chats appear in a Claude window after you restart that window. Claude reads its chat list when it starts.</p>
+      </div>
+      <h2>Warnings</h2>
+      <ul id="sync-warnings" class="list"></ul>
+    </section>
+
+    <section id="tab-backups" class="tab" hidden>
+      <p class="muted">A backup of every chat list is taken before each sync that changes something. The newest 20 are kept. To restore one, quit every Claude window first.</p>
+      <ul id="backups" class="list"></ul>
+    </section>
+
+    <section id="tab-settings" class="tab" hidden>
+      <div class="panel form">
+        <label class="check"><input type="checkbox" id="set-sync" /> Sync chats automatically</label>
+        <label>Sync every <input type="number" id="set-interval" min="1" max="60" /> minutes</label>
+        <label class="check"><input type="checkbox" id="set-login" /> Start Tandem for Claude when I log in</label>
+        <div><button id="save-settings" class="primary">Save</button></div>
+      </div>
+      <h2>Keep old chats</h2>
+      <div class="panel form">
+        <p class="muted">Claude Code itself deletes chats older than this many days (its default is 30), whichever profile they came from. This changes <code>cleanupPeriodDays</code> in Claude Code's settings; your other settings are kept.</p>
+        <label>Keep chats for <input type="number" id="set-retention" min="30" max="3650" /> days</label>
+        <div><button id="save-retention">Apply</button></div>
+      </div>
+      <p class="muted small">Keep one chat open in only one profile at a time. Two seats writing the same chat at once can mix up its messages.</p>
+      <p class="muted small">Tandem for Claude is open source (MIT) and not affiliated with Anthropic.</p>
+    </section>
+  </main>
+
+  <dialog id="dlg">
+    <form method="dialog" id="dlg-form">
+      <h2 id="dlg-title"></h2>
+      <div id="dlg-body"></div>
+      <div class="row end">
+        <button value="cancel" id="dlg-cancel">Cancel</button>
+        <button value="ok" id="dlg-ok" class="primary">OK</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
