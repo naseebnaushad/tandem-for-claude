@@ -2,6 +2,23 @@
 
 All notable changes, in user terms. Written by `/promote` only.
 
+## 0.1.0-beta.2 (2026-11-21)
+The app is renamed to **Tango for Claude** (it was "Tandem for Claude" in beta.1).
+
+### Changed
+- New name, **Tango for Claude**, because another project already used "Tandem for Claude" for the same purpose. The GitHub repository is now `naseebnaushad/tango-for-claude`; old links redirect.
+- **Breaking for scripts:** the command-line tool is now `tango` instead of `tandem`. Commands and options are unchanged.
+
+### Upgrading from beta.1
+- Quit and delete Tandem for Claude, then install Tango for Claude. Profiles, sign-ins, backups and settings are kept.
+- Start at login, if it was on, moves to Tango automatically.
+
+### Fixed
+- Release downloads now get clean names (`tango-for-claude-<version>-…`) and Beta releases are marked as pre-releases.
+
+### Known issues
+- Same as beta.1. Also: if the old Tandem app is still running, both apps sync; quit the old one.
+
 ## 0.1.0-beta.1 (2026-11-21)
 First public Beta of **Tandem for Claude**.
 
