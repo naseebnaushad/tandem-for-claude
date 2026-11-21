@@ -1,4 +1,4 @@
-// Package domain holds the pure rules of Tandem for Claude: which chat list
+// Package domain holds the pure rules of Tango for Claude: which chat list
 // entries to copy between accounts, and what makes a valid entry, tombstone or
 // profile name. It does no I/O, so every rule can be tested with plain values.
 package domain

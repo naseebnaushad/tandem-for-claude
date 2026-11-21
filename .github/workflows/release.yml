@@ -68,23 +68,23 @@ jobs:
         if: matrix.name == 'macos'
         run: |
           wails3 task darwin:package:universal APP_VERSION="$VERSION"
-          mv bin/tandem.app "bin/Tandem for Claude.app"
-          ditto -c -k --keepParent "bin/Tandem for Claude.app" "dist/tandem-for-claude-$VERSION-macos-universal.zip"
+          mv bin/tango.app "bin/Tango for Claude.app"
+          ditto -c -k --keepParent "bin/Tango for Claude.app" "dist/tango-for-claude-$VERSION-macos-universal.zip"
 
       - name: Package (Windows)
         if: matrix.name == 'windows'
         shell: bash
         run: |
           wails3 task windows:package INSTALL_SCOPE=user APP_VERSION="$VERSION"
-          cp bin/tandem.exe "dist/tandem-for-claude-$VERSION-windows-x64-portable.exe"
-          cp bin/tandem-amd64-installer.exe "dist/tandem-for-claude-$VERSION-windows-x64-setup.exe"
+          cp bin/tango.exe "dist/tango-for-claude-$VERSION-windows-x64-portable.exe"
+          cp bin/tango-amd64-installer.exe "dist/tango-for-claude-$VERSION-windows-x64-setup.exe"
 
       - name: Package (Linux)
         if: matrix.name == 'linux'
         run: |
           wails3 task linux:create:appimage APP_VERSION="$VERSION"
-          cp bin/*.AppImage "dist/tandem-for-claude-$VERSION-linux-x86_64.AppImage"
-          tar -czf "dist/tandem-for-claude-$VERSION-linux-x86_64.tar.gz" -C bin tandem
+          cp bin/*.AppImage "dist/tango-for-claude-$VERSION-linux-x86_64.AppImage"
+          tar -czf "dist/tango-for-claude-$VERSION-linux-x86_64.tar.gz" -C bin tango
 
       - uses: actions/upload-artifact@v7.0.2
         with:
@@ -104,7 +104,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          cd out && sha256sum tandem-for-claude-* > SHA256SUMS.txt
+          cd out && sha256sum tango-for-claude-* > SHA256SUMS.txt
           # A version with a hyphen (0.1.0-beta.1) is a pre-release.
           pre=""; [[ "$GITHUB_REF_NAME" == *-* ]] && pre="--prerelease"
-          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft $pre --title "Tandem for Claude ${GITHUB_REF_NAME#v}" --notes "Unsigned build. See the README for the first-run step on macOS and Windows." tandem-for-claude-* SHA256SUMS.txt
+          gh release create "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --draft $pre --title "Tango for Claude ${GITHUB_REF_NAME#v}" --notes "Unsigned build. See the README for the first-run step on macOS and Windows." tango-for-claude-* SHA256SUMS.txt

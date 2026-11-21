@@ -10,8 +10,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/naseebnaushad/tandem-for-claude/internal/adapters/fsstore"
-	"github.com/naseebnaushad/tandem-for-claude/internal/domain"
+	"github.com/naseebnaushad/tango-for-claude/internal/adapters/fsstore"
+	"github.com/naseebnaushad/tango-for-claude/internal/domain"
 )
 
 const (
@@ -125,7 +125,7 @@ func TestApplyCopiesAndClearsAccountFields(t *testing.T) {
 	}
 	files, _ := os.ReadDir(f.folder(a2, ""))
 	for _, e := range files {
-		if strings.HasPrefix(e.Name(), ".tandem-") {
+		if strings.HasPrefix(e.Name(), ".tango-") {
 			t.Fatal("temp file left")
 		}
 	}
@@ -238,7 +238,7 @@ func TestWarnOnlyWhenBothSeatsUsed(t *testing.T) {
 	}
 	f.put(a2, c1, entry(c1, 160, nil), "")
 	if !hasKind(f.sync(true, false, nil).Actions, domain.ActWarn) {
-		t.Fatal("no warning for two tandem")
+		t.Fatal("no warning for two seats")
 	}
 }
 

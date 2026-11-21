@@ -1,8 +1,8 @@
 // The page only shows state and forwards clicks to the Go service. All text
 // from Go is set with textContent, never innerHTML (CR-0.1.0-02 D16).
 import { Events } from "@wailsio/runtime";
-import * as Svc from "../bindings/github.com/naseebnaushad/tandem-for-claude/ui/service";
-import type { ProfileView, Settings } from "../bindings/github.com/naseebnaushad/tandem-for-claude/internal/app/models";
+import * as Svc from "../bindings/github.com/naseebnaushad/tango-for-claude/ui/service";
+import type { ProfileView, Settings } from "../bindings/github.com/naseebnaushad/tango-for-claude/internal/app/models";
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
@@ -214,7 +214,7 @@ function showSync(v: Awaited<ReturnType<typeof Svc.SyncStatus>>) {
   if (v.pending) parts.push(`${v.pending} waiting`);
   $("sync-sub").textContent = parts.join(" · ");
   const items: HTMLElement[] = [];
-  if (v.paused) items.push(el("li", "", "Some chat list files have a format this version doesn't know (Claude may have been updated). Nothing is written until Tandem for Claude is updated."));
+  if (v.paused) items.push(el("li", "", "Some chat list files have a format this version doesn't know (Claude may have been updated). Nothing is written until Tango for Claude is updated."));
   for (const w of [...(v.warnings ?? []), ...(v.problems ?? [])]) items.push(el("li", "", w));
   if (!items.length) items.push(el("li", "empty", "No warnings."));
   $("sync-warnings").replaceChildren(...items);

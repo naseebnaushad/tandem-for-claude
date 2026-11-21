@@ -10,8 +10,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/naseebnaushad/tandem-for-claude/internal/app"
-	"github.com/naseebnaushad/tandem-for-claude/internal/domain"
+	"github.com/naseebnaushad/tango-for-claude/internal/app"
+	"github.com/naseebnaushad/tango-for-claude/internal/domain"
 )
 
 // Exit codes, as in the Python tool.
@@ -21,24 +21,24 @@ const (
 	ExitUsage = 2
 )
 
-const usage = `Tandem for Claude: use several Claude seats and keep every Code-tab chat.
+const usage = `Tango for Claude: use several Claude seats and keep every Code-tab chat.
 
 Usage:
-  tandem                        open the app window
-  tandem status                 show chat lists and what sync would do
-  tandem sync [--apply] [--quiet]
+  tango                        open the app window
+  tango status                 show chat lists and what sync would do
+  tango sync [--apply] [--quiet]
                                 copy chat list entries between seats (dry run by default)
-  tandem profile list
-  tandem profile add <name> [--kind desktop|cli]
-  tandem profile rename <id> <new name>
-  tandem profile open <id>
-  tandem profile signin <id>    first sign-in of a desktop profile
-  tandem profile remove <id> [--delete-data] [--yes]
-  tandem backups list
-  tandem backups restore <id> [--yes]
-  tandem autostart on|off|status
-  tandem retention [days]       show or set how long Claude Code keeps chats
-  tandem version
+  tango profile list
+  tango profile add <name> [--kind desktop|cli]
+  tango profile rename <id> <new name>
+  tango profile open <id>
+  tango profile signin <id>    first sign-in of a desktop profile
+  tango profile remove <id> [--delete-data] [--yes]
+  tango backups list
+  tango backups restore <id> [--yes]
+  tango autostart on|off|status
+  tango retention [days]       show or set how long Claude Code keeps chats
+  tango version
 `
 
 // Run executes one command and returns the exit code.
@@ -63,7 +63,7 @@ func Run(m *app.Manager, args []string, version string, stdout io.Writer, stdin 
 	case "retention":
 		err = retention(m, p, args[1:])
 	case "version", "--version":
-		p.say("Tandem for Claude " + version)
+		p.say("Tango for Claude " + version)
 	case "help", "-h", "--help":
 		p.say(usage)
 	default:
@@ -241,7 +241,7 @@ func splitFlags(args []string) (pos []string, flags map[string]string) {
 func profile(m *app.Manager, p printer, args []string, stdin io.Reader) error {
 	pos, flags := splitFlags(args)
 	if len(pos) == 0 {
-		return usageErr("Usage: tandem profile list|add|rename|open|signin|remove")
+		return usageErr("Usage: tango profile list|add|rename|open|signin|remove")
 	}
 	switch pos[0] {
 	case "list":
@@ -259,7 +259,7 @@ func profile(m *app.Manager, p printer, args []string, stdin io.Reader) error {
 		return nil
 	case "add":
 		if len(pos) < 2 {
-			return usageErr("Usage: tandem profile add <name> [--kind desktop|cli]")
+			return usageErr("Usage: tango profile add <name> [--kind desktop|cli]")
 		}
 		kind := domain.ProfileKind(flags["kind"])
 		if kind == "" {
@@ -271,24 +271,24 @@ func profile(m *app.Manager, p printer, args []string, stdin io.Reader) error {
 		}
 		p.say("Created %s profile %q (id %s).", pr.Kind, pr.Name, pr.ID)
 		if pr.Kind == domain.KindDesktop {
-			p.say("Next: tandem profile signin %s", pr.ID)
+			p.say("Next: tango profile signin %s", pr.ID)
 		} else {
-			p.say("Next: tandem profile open %s, then log in with the seat for this profile.", pr.ID)
+			p.say("Next: tango profile open %s, then log in with the seat for this profile.", pr.ID)
 		}
 		return nil
 	case "rename":
 		if len(pos) < 3 {
-			return usageErr("Usage: tandem profile rename <id> <new name>")
+			return usageErr("Usage: tango profile rename <id> <new name>")
 		}
 		return m.Profiles.Rename(pos[1], strings.Join(pos[2:], " "))
 	case "open":
 		if len(pos) < 2 {
-			return usageErr("Usage: tandem profile open <id>")
+			return usageErr("Usage: tango profile open <id>")
 		}
 		return m.Profiles.Open(pos[1])
 	case "signin":
 		if len(pos) < 2 {
-			return usageErr("Usage: tandem profile signin <id>")
+			return usageErr("Usage: tango profile signin <id>")
 		}
 		others, err := m.Profiles.SignInOthers(pos[1])
 		if err != nil {
@@ -305,7 +305,7 @@ func profile(m *app.Manager, p printer, args []string, stdin io.Reader) error {
 		return m.Profiles.SignInDone()
 	case "remove":
 		if len(pos) < 2 {
-			return usageErr("Usage: tandem profile remove <id> [--delete-data] [--yes]")
+			return usageErr("Usage: tango profile remove <id> [--delete-data] [--yes]")
 		}
 		del := hasFlag(args, "--delete-data")
 		if del && !confirm(p, stdin, "Delete this profile's folder, including its sign-in? Shared chats stay.", hasFlag(args, "--yes")) {
@@ -313,7 +313,7 @@ func profile(m *app.Manager, p printer, args []string, stdin io.Reader) error {
 		}
 		return m.Profiles.Delete(pos[1], del)
 	}
-	return usageErr("Usage: tandem profile list|add|rename|open|signin|remove")
+	return usageErr("Usage: tango profile list|add|rename|open|signin|remove")
 }
 
 func hasFlag(args []string, f string) bool {
@@ -327,7 +327,7 @@ func hasFlag(args []string, f string) bool {
 
 func backups(m *app.Manager, p printer, args []string, stdin io.Reader) error {
 	if len(args) == 0 {
-		return usageErr("Usage: tandem backups list|restore <id>")
+		return usageErr("Usage: tango backups list|restore <id>")
 	}
 	switch args[0] {
 	case "list":
@@ -337,7 +337,7 @@ func backups(m *app.Manager, p printer, args []string, stdin io.Reader) error {
 		return nil
 	case "restore":
 		if len(args) < 2 {
-			return usageErr("Usage: tandem backups restore <id> [--yes]")
+			return usageErr("Usage: tango backups restore <id> [--yes]")
 		}
 		if !confirm(p, stdin, "Restore backup "+args[1]+"? Current chat lists are kept as claude-code-sessions.before-restore-<time>.", hasFlag(args, "--yes")) {
 			return nil
@@ -348,7 +348,7 @@ func backups(m *app.Manager, p printer, args []string, stdin io.Reader) error {
 		}
 		return err
 	}
-	return usageErr("Usage: tandem backups list|restore <id>")
+	return usageErr("Usage: tango backups list|restore <id>")
 }
 
 func retention(m *app.Manager, p printer, args []string) error {
@@ -361,7 +361,7 @@ func retention(m *app.Manager, p printer, args []string) error {
 	}
 	var days int
 	if _, err := fmt.Sscanf(args[0], "%d", &days); err != nil {
-		return usageErr("Usage: tandem retention [days]  (30 to 3650)")
+		return usageErr("Usage: tango retention [days]  (30 to 3650)")
 	}
 	if err := m.SetRetention(days); err != nil {
 		return err
@@ -382,7 +382,7 @@ func autostart(m *app.Manager, p printer, args []string) error {
 	case "off":
 		s.StartAtLogin = false
 	default:
-		return usageErr("Usage: tandem autostart on|off|status")
+		return usageErr("Usage: tango autostart on|off|status")
 	}
 	return m.SaveSettings(s)
 }

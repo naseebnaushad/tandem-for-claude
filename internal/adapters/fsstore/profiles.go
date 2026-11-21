@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/naseebnaushad/tandem-for-claude/internal/domain"
+	"github.com/naseebnaushad/tango-for-claude/internal/domain"
 )
 
 const maxSmallFile = 1 << 20

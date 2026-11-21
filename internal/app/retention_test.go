@@ -29,7 +29,7 @@ func TestRetentionKeepsOtherSettings(t *testing.T) {
 	if !json.Valid(raw) || !containsNumber(raw, "1794479906673") {
 		t.Fatal("number precision lost")
 	}
-	if _, err := os.Stat(path + ".before-tandem"); err != nil {
+	if _, err := os.Stat(path + ".before-tango"); err != nil {
 		t.Fatal("no backup of the previous settings")
 	}
 }

@@ -7,10 +7,10 @@
 		"0409": {
 			"FileVersion": "0.1.0",
 			"ProductVersion": "0.1.0",
-			"CompanyName": "Tandem for Claude contributors",
+			"CompanyName": "Tango for Claude contributors",
 			"FileDescription": "Use several Claude seats side by side and keep every Code-tab chat",
-			"LegalCopyright": "(c) 2026, Tandem for Claude contributors. MIT licence.",
-			"ProductName": "Tandem for Claude",
+			"LegalCopyright": "(c) 2026, Tango for Claude contributors. MIT licence.",
+			"ProductName": "Tango for Claude",
 			"Comments": "Not affiliated with Anthropic."
 		}
 	}

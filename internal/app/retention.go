@@ -78,7 +78,7 @@ func (m *Manager) SetRetention(days int) error {
 		return err
 	}
 	if prev, err := os.ReadFile(path); err == nil {
-		if err := os.WriteFile(path+".before-tandem", prev, 0o600); err != nil {
+		if err := os.WriteFile(path+".before-tango", prev, 0o600); err != nil {
 			return err
 		}
 	}
@@ -90,7 +90,7 @@ func (m *Manager) SetRetention(days int) error {
 	if err := enc.Encode(s); err != nil {
 		return err
 	}
-	tmp := path + ".tandem-tmp"
+	tmp := path + ".tango-tmp"
 	if err := os.WriteFile(tmp, buf.Bytes(), 0o600); err != nil {
 		return err
 	}

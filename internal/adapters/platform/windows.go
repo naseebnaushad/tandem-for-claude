@@ -14,11 +14,15 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/naseebnaushad/tandem-for-claude/internal/ports"
+	"github.com/naseebnaushad/tango-for-claude/internal/ports"
 )
 
 const runKey = `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`
-const runValue = "TandemForClaude"
+const runValue = "TangoForClaude"
+
+// oldRunValue is the Run entry of 0.1.0-beta.1, when the app was called
+// "Tandem for Claude".
+const oldRunValue = "TandemForClaude"
 
 // Win implements ports.Platform on Windows.
 type Win struct{}
@@ -137,6 +141,16 @@ func (Win) SetAutostart(enable bool, exe string) error {
 func (Win) AutostartEnabled() bool {
 	_, err := output("reg.exe", "query", runKey, "/v", runValue)
 	return err == nil
+}
+
+// MigrateOldAutostart replaces the Run entry of the app's old name with one
+// for this app, keeping the user's choice. True if it found one.
+func (w Win) MigrateOldAutostart(exe string) bool {
+	if _, err := output("reg.exe", "query", runKey, "/v", oldRunValue); err != nil {
+		return false
+	}
+	_, _ = output("reg.exe", "delete", runKey, "/v", oldRunValue, "/f")
+	return w.SetAutostart(true, exe) == nil
 }
 
 // OpenFolder shows a folder in Explorer.

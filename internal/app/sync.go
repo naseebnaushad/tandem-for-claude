@@ -3,8 +3,8 @@
 package app
 
 import (
-	"github.com/naseebnaushad/tandem-for-claude/internal/domain"
-	"github.com/naseebnaushad/tandem-for-claude/internal/ports"
+	"github.com/naseebnaushad/tango-for-claude/internal/domain"
+	"github.com/naseebnaushad/tango-for-claude/internal/ports"
 )
 
 // SyncResult reports what a sync planned, did and couldn't do.

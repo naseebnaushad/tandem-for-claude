@@ -14,8 +14,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/naseebnaushad/tandem-for-claude/internal/domain"
-	"github.com/naseebnaushad/tandem-for-claude/internal/ports"
+	"github.com/naseebnaushad/tango-for-claude/internal/domain"
+	"github.com/naseebnaushad/tango-for-claude/internal/ports"
 )
 
 // Paths are the folders the app works with.
@@ -387,7 +387,11 @@ func (p *Profiles) DesktopDataDirs() (map[string]string, error) {
 	return out, nil
 }
 
-const copiedMarker = ".tandem-copied"
+const copiedMarker = ".tango-copied"
+
+// oldCopiedMarker is the name 0.1.0-beta.1 (then "Tandem for Claude") used. It is
+// still read, so an upgrade keeps refreshing the files it had copied.
+const oldCopiedMarker = ".tandem-copied"
 
 // setUpCLI creates a CLI profile folder: links to the shared items, and a
 // copy of .claude.json without account fields (CR-02 D12, OQ4).
@@ -435,14 +439,19 @@ func (p *Profiles) copyClaudeJSON(dst string) error {
 // allowed (Windows without Developer Mode, OQ3) when the original changed.
 func (p *Profiles) RefreshCLI(dir string) error {
 	copied := map[string]bool{}
-	if b, err := os.ReadFile(filepath.Join(dir, copiedMarker)); err == nil {
+	changed := false
+	for _, name := range []string{copiedMarker, oldCopiedMarker} {
+		b, err := os.ReadFile(filepath.Join(dir, name))
+		if err != nil {
+			continue
+		}
 		for _, l := range strings.Split(string(b), "\n") {
-			if l != "" {
+			if l != "" && !copied[l] {
 				copied[l] = true
+				changed = changed || name == oldCopiedMarker // carry it over to the new name
 			}
 		}
 	}
-	changed := false
 	for _, item := range domain.SharedCLIItems {
 		src := filepath.Join(p.Paths.ClaudeDir, item)
 		dst := filepath.Join(dir, item)

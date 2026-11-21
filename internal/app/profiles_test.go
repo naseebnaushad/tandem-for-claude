@@ -6,9 +6,9 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/naseebnaushad/tandem-for-claude/internal/adapters/fsstore"
-	"github.com/naseebnaushad/tandem-for-claude/internal/domain"
-	"github.com/naseebnaushad/tandem-for-claude/internal/ports"
+	"github.com/naseebnaushad/tango-for-claude/internal/adapters/fsstore"
+	"github.com/naseebnaushad/tango-for-claude/internal/domain"
+	"github.com/naseebnaushad/tango-for-claude/internal/ports"
 )
 
 // fakePlatform records launches and lets tests decide what is running.
@@ -188,6 +188,30 @@ func TestCopyFallbackRecopiesWhenChanged(t *testing.T) {
 	must(t, p.RefreshCLI(p.Paths.CLIDir(pr.ID)))
 	if b, _ := os.ReadFile(dst); string(b) != "new rules" {
 		t.Fatal("not re-copied")
+	}
+}
+
+// PROF-010: a profile made by 0.1.0-beta.1 (then "Tandem for Claude") still
+// has its copied files refreshed, and the record moves to the new name.
+func TestOldCopiedMarkerStillRead(t *testing.T) {
+	p, plat := newProfiles(t)
+	plat.noLinks = true
+	pr, err := p.Create("Win", domain.KindCLI)
+	must(t, err)
+	dir := p.Paths.CLIDir(pr.ID)
+	must(t, os.Rename(filepath.Join(dir, copiedMarker), filepath.Join(dir, oldCopiedMarker)))
+	plat.noLinks = false // links work now, so only the old record says "copy"
+	src := filepath.Join(p.Paths.ClaudeDir, "CLAUDE.md")
+	dst := filepath.Join(dir, "CLAUDE.md")
+	must(t, os.WriteFile(src, []byte("new rules"), 0o600))
+	future := mustStat(t, dst).ModTime().Add(2e9)
+	must(t, os.Chtimes(src, future, future))
+	must(t, p.RefreshCLI(dir))
+	if b, _ := os.ReadFile(dst); string(b) != "new rules" {
+		t.Fatal("old record ignored: not re-copied")
+	}
+	if _, err := os.Stat(filepath.Join(dir, copiedMarker)); err != nil {
+		t.Fatal("record not carried over to the new name")
 	}
 }
 

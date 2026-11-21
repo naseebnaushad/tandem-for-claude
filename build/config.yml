@@ -5,11 +5,11 @@ version: '3'
 
 # This information is used to generate the build assets.
 info:
-  companyName: "Tandem for Claude contributors" # The name of the company
-  productName: "Tandem for Claude" # The name of the application
-  productIdentifier: "io.github.naseebnaushad.tandemforclaude" # The unique product identifier
+  companyName: "Tango for Claude contributors" # The name of the company
+  productName: "Tango for Claude" # The name of the application
+  productIdentifier: "io.github.naseebnaushad.tangoforclaude" # The unique product identifier
   description: "Use several Claude seats side by side and keep every Code-tab chat" # The application description
-  copyright: "(c) 2026, Tandem for Claude contributors. MIT licence." # Copyright text
+  copyright: "(c) 2026, Tango for Claude contributors. MIT licence." # Copyright text
   comments: "Not affiliated with Anthropic." # Comments
   version: "0.1.0" # The application version
   # cfBundleIconName: "appicon" # The macOS icon name in Assets.car icon bundles (optional)

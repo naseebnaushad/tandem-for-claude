@@ -14,7 +14,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/naseebnaushad/tandem-for-claude/internal/domain"
+	"github.com/naseebnaushad/tango-for-claude/internal/domain"
 )
 
 const (
@@ -23,7 +23,10 @@ const (
 	maxEntryBytes = 10 << 20
 	maxTombstone  = 64
 	maxStateBytes = 5 << 20
-	tempPrefix    = ".tandem-"
+	tempPrefix    = ".tango-"
+	// oldTempPrefix is what 0.1.0-beta.1 (then "Tandem for Claude") used; leftovers
+	// are still kept out of backups.
+	oldTempPrefix = ".tandem-"
 	filePerm      = 0o600
 	dirPerm       = 0o700
 )
