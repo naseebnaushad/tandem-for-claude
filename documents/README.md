@@ -12,6 +12,8 @@ Index of every document in this folder. This repo keeps Markdown only (no HTML r
 | 0.1.0 | Alpha | [v0.1.0 - Change Request (Cross-platform profile manager app)](v0.1.0/alpha/v0.1.0%20-%20Change%20Request%20(Cross-platform%20profile%20manager%20app).md) | Beta |
 | 0.1.0 | Alpha | [v0.1.0 - Alpha Test Cases](v0.1.0/alpha/v0.1.0%20-%20Alpha%20Test%20Cases.md) | Final for Alpha |
 | 0.1.0 | Alpha | [Change note: feature/profile-manager](v0.1.0/alpha/changes/feature-profile-manager.md) | Compiled into 0.1.0-beta.1 |
+| 0.1.0 | Alpha | [Change note: fix/release-asset-names](v0.1.0/alpha/changes/fix-release-asset-names.md) | Compiled into 0.1.0-beta.2 |
+| 0.1.0 | Alpha | [Change note: fix/rename-to-tango](v0.1.0/alpha/changes/fix-rename-to-tango.md) | Compiled into 0.1.0-beta.2 |
 | — | — | [CHANGELOG](CHANGELOG.md) | — |
 
 ## Unreleased change notes
