@@ -13,10 +13,14 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/naseebnaushad/tandem-for-claude/internal/ports"
+	"github.com/naseebnaushad/tango-for-claude/internal/ports"
 )
 
-const agentLabel = "local.tandem-for-claude"
+const agentLabel = "local.tango-for-claude"
+
+// oldAgentLabel is the LaunchAgent of 0.1.0-beta.1, when the app was called
+// "Tandem for Claude".
+const oldAgentLabel = "local.tandem-for-claude"
 
 // legacyAgentLabel is the LaunchAgent the earlier Python tool installed.
 const legacyAgentLabel = "local.claude-profile.sync"
@@ -84,7 +88,7 @@ func (m Mac) LaunchDesktop(dataDir string) error {
 }
 
 // FocusDesktop brings that exact process to the front (macOS may ask once
-// to allow Tandem for Claude to control System Events).
+// to allow Tango for Claude to control System Events).
 func (m Mac) FocusDesktop(pid int) error {
 	_, err := output("/usr/bin/osascript", "-e",
 		`tell application "System Events" to set frontmost of (first process whose unix id is `+strconv.Itoa(pid)+`) to true`)
@@ -153,6 +157,18 @@ func (m Mac) RemoveLegacyAgent() bool {
 	}
 	_, _ = output("/bin/launchctl", "bootout", "gui/"+strconv.Itoa(os.Getuid()), path)
 	return os.Remove(path) == nil
+}
+
+// MigrateOldAutostart replaces the start-at-login job of the app's old name
+// with one for this app, keeping the user's choice. True if it found one.
+func (m Mac) MigrateOldAutostart(exe string) bool {
+	path := m.agentPath(oldAgentLabel)
+	if !exists(path) {
+		return false
+	}
+	_, _ = output("/bin/launchctl", "bootout", "gui/"+strconv.Itoa(os.Getuid()), path)
+	_ = os.Remove(path)
+	return m.SetAutostart(true, exe) == nil
 }
 
 // OpenFolder shows a folder in Finder.

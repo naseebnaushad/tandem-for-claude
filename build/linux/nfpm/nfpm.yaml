@@ -3,7 +3,7 @@
 #
 # The lines below are called `modelines`. See `:help modeline`
 
-name: "tandem"
+name: "tango"
 arch: ${GOARCH}
 platform: "linux"
 version: "0.1.0"
@@ -11,18 +11,18 @@ section: "default"
 priority: "extra"
 maintainer: ${GIT_COMMITTER_NAME} <${GIT_COMMITTER_EMAIL}>
 description: "Use several Claude seats side by side and keep every Code-tab chat"
-vendor: "Tandem for Claude contributors"
+vendor: "Tango for Claude contributors"
 homepage: "https://wails.io"
 license: "MIT"
 release: "1"
 
 contents:
-  - src: "./bin/tandem"
-    dst: "/usr/local/bin/tandem"
+  - src: "./bin/tango"
+    dst: "/usr/local/bin/tango"
   - src: "./build/appicon.png"
-    dst: "/usr/share/icons/hicolor/128x128/apps/tandem.png"
-  - src: "./build/linux/tandem.desktop"
-    dst: "/usr/share/applications/tandem.desktop"
+    dst: "/usr/share/icons/hicolor/128x128/apps/tango.png"
+  - src: "./build/linux/tango.desktop"
+    dst: "/usr/share/applications/tango.desktop"
 
 # Default dependencies for the GTK4 + WebKitGTK 6.0 stack (Ubuntu 24.04+ / Debian 13+)
 depends:

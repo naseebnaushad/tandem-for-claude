@@ -1,4 +1,4 @@
-module github.com/naseebnaushad/tandem-for-claude
+module github.com/naseebnaushad/tango-for-claude
 
 go 1.26.0
 

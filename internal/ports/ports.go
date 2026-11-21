@@ -2,7 +2,7 @@
 // implement them; tests use temp-folder or in-memory versions.
 package ports
 
-import "github.com/naseebnaushad/tandem-for-claude/internal/domain"
+import "github.com/naseebnaushad/tango-for-claude/internal/domain"
 
 // SessionStore reads and writes Claude desktop chat lists.
 type SessionStore interface {

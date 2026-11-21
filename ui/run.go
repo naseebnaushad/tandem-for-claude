@@ -13,9 +13,9 @@ import (
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/events"
 
-	"github.com/naseebnaushad/tandem-for-claude/internal/app"
-	"github.com/naseebnaushad/tandem-for-claude/internal/domain"
-	"github.com/naseebnaushad/tandem-for-claude/internal/wiring"
+	"github.com/naseebnaushad/tango-for-claude/internal/app"
+	"github.com/naseebnaushad/tango-for-claude/internal/domain"
+	"github.com/naseebnaushad/tango-for-claude/internal/wiring"
 )
 
 const maxLogBytes = 1 << 20
@@ -54,13 +54,13 @@ func Run(m *app.Manager, assets embed.FS, version string, background bool) error
 
 	var window *application.WebviewWindow
 	wapp := application.New(application.Options{
-		Name:        "Tandem for Claude",
+		Name:        "Tango for Claude",
 		Description: "Use several Claude seats and keep every Code-tab chat",
 		Services:    []application.Service{application.NewService(svc)},
 		Assets:      application.AssetOptions{Handler: application.AssetFileServerFS(dist)},
 		Mac:         application.MacOptions{ApplicationShouldTerminateAfterLastWindowClosed: false},
 		SingleInstance: &application.SingleInstanceOptions{
-			UniqueID: "io.github.naseebnaushad.tandemforclaude",
+			UniqueID: "io.github.naseebnaushad.tangoforclaude",
 			OnSecondInstanceLaunch: func(application.SecondInstanceData) {
 				if window != nil {
 					window.Show()
@@ -71,7 +71,7 @@ func Run(m *app.Manager, assets embed.FS, version string, background bool) error
 	})
 
 	window = wapp.Window.NewWithOptions(application.WebviewWindowOptions{
-		Title:            "Tandem for Claude",
+		Title:            "Tango for Claude",
 		Width:            920,
 		Height:           640,
 		MinWidth:         640,
@@ -93,7 +93,7 @@ func Run(m *app.Manager, assets embed.FS, version string, background bool) error
 	} else {
 		tray.SetIcon(trayColour)
 	}
-	tray.SetTooltip("Tandem for Claude")
+	tray.SetTooltip("Tango for Claude")
 	rebuild := func() { tray.SetMenu(trayMenu(wapp, m, show, svc)) }
 	svc.changed = func() { rebuild() }
 	svc.synced = func() { wapp.Event.Emit("synced") }
@@ -102,6 +102,9 @@ func Run(m *app.Manager, assets embed.FS, version string, background bool) error
 
 	if r, ok := m.Platform.(wiring.LegacyAgentRemover); ok && r.RemoveLegacyAgent() {
 		log.Info("removed the earlier tool's background job; the app now syncs while it runs")
+	}
+	if r, ok := m.Platform.(wiring.OldAutostartMigrator); ok && m.Exe != "" && r.MigrateOldAutostart(m.Exe) {
+		log.Info("moved start at login from the old app name to Tango for Claude")
 	}
 
 	go syncLoop(m, svc, log)
@@ -158,7 +161,7 @@ func trayMenu(wapp *application.App, m *app.Manager, show func(), svc *Service) 
 			}
 		}()
 	})
-	menu.Add("Open Tandem for Claude").OnClick(func(*application.Context) { show() })
+	menu.Add("Open Tango for Claude").OnClick(func(*application.Context) { show() })
 	menu.AddSeparator()
 	menu.Add("Quit").OnClick(func(*application.Context) { wapp.Quit() })
 	return menu

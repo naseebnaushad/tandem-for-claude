@@ -1,4 +1,4 @@
-# Tandem for Claude
+# Tango for Claude
 
 Use several Claude seats on one computer, side by side, without logging out and without
 losing chats. Each **profile** is its own Claude desktop window or Claude Code terminal
@@ -10,7 +10,7 @@ with its own sign-in, and every profile sees every Code-tab chat.
 The Claude desktop app lists only the signed-in account's Code-tab chats. Switch
 accounts and the other account's chats seem to vanish. They aren't deleted: the
 conversations live in `~/.claude/projects`, shared by every account, and only the list
-entry is per account. Tandem for Claude copies those list entries between your seats, so
+entry is per account. Tango for Claude copies those list entries between your seats, so
 you can start a chat on one seat and continue it on another.
 
 ```mermaid
@@ -26,12 +26,12 @@ Get the latest release from this repository's **Releases** page:
 
 | System | File |
 |---|---|
-| macOS (Apple Silicon and Intel) | `tandem-for-claude-<version>-macos-universal.zip` |
+| macOS (Apple Silicon and Intel) | `tango-for-claude-<version>-macos-universal.zip` |
 | Windows 10/11 (x64) | `…-windows-x64-setup.exe` (installer) or `…-windows-x64-portable.exe` |
 | Linux (x86_64) | `…-linux-x86_64.AppImage` or `….tar.gz` (needs GTK 4 and WebKitGTK 6.0, e.g. Ubuntu 24.04+, Fedora 40+) |
 
 The builds are **not code-signed**, so the first start needs one extra step:
-- **macOS:** unzip, move *Tandem for Claude* to Applications, then right-click it → **Open**
+- **macOS:** unzip, move *Tango for Claude* to Applications, then right-click it → **Open**
   → **Open**. Only needed once.
 - **Windows:** if SmartScreen appears, click **More info** → **Run anyway**.
 - **Linux:** `chmod +x` the AppImage, then run it.
@@ -39,8 +39,13 @@ The builds are **not code-signed**, so the first start needs one extra step:
 Check a download against `SHA256SUMS.txt` from the same release if you want to be sure
 it wasn't changed.
 
+**Coming from "Tandem for Claude" (0.1.0-beta.1)?** It's the same app, renamed. Quit
+Tandem for Claude (tray icon → **Quit**), delete it, and install Tango for Claude. Your
+profiles, sign-ins, backups and settings are kept. If start at login was on, Tango takes
+it over on its first start.
+
 ## Using it
-1. Open **Tandem for Claude**. You'll see two built-in profiles: your normal Claude
+1. Open **Tango for Claude**. You'll see two built-in profiles: your normal Claude
    window and plain `claude` in a terminal.
 2. Click **New profile**, give it any name (for example "Seat 2"), and choose:
    - **Desktop:** a separate Claude desktop window.
@@ -91,27 +96,27 @@ chat at once can mix up its messages. The **Sync** tab warns you when this happe
   with a community build, while terminal profiles work everywhere.
 - **Old chats:** Claude Code itself deletes conversations older than
   `cleanupPeriodDays` (30 days by default). Raise it under **Settings → Keep old chats**
-  (or `tandem retention 365`). Your other Claude Code settings are kept, and the
-  previous file is saved as `settings.json.before-tandem`.
+  (or `tango retention 365`). Your other Claude Code settings are kept, and the
+  previous file is saved as `settings.json.before-tango`.
 - Relies on Claude's internal file layout (tested with Claude desktop 6.6395.1 on macOS).
 
 ## Command line
 The same program works as a command-line tool when given arguments. On macOS the
-binary is inside the app: `"/Applications/Tandem for Claude.app/Contents/MacOS/tandem"`.
+binary is inside the app: `"/Applications/Tango for Claude.app/Contents/MacOS/tango"`.
 
 ```bash
-tandem status
+tango status
 ```
 ```bash
-tandem sync --apply
+tango sync --apply
 ```
 ```bash
-tandem profile add "Seat 2" --kind desktop
+tango profile add "Seat 2" --kind desktop
 ```
 ```bash
-tandem profile signin <id>
+tango profile signin <id>
 ```
-Run `tandem help` for every command (profiles, backups, start at login, chat retention).
+Run `tango help` for every command (profiles, backups, start at login, chat retention).
 
 ## Build from source
 Prerequisites: Go 1.26+, Node.js 22+, and the Wails CLI:

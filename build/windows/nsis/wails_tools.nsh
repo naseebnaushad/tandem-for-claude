@@ -5,19 +5,19 @@
 !include "FileFunc.nsh"
 
 !ifndef INFO_PROJECTNAME
-    !define INFO_PROJECTNAME "tandem"
+    !define INFO_PROJECTNAME "tango"
 !endif
 !ifndef INFO_COMPANYNAME
-    !define INFO_COMPANYNAME "Tandem for Claude contributors"
+    !define INFO_COMPANYNAME "Tango for Claude contributors"
 !endif
 !ifndef INFO_PRODUCTNAME
-    !define INFO_PRODUCTNAME "Tandem for Claude"
+    !define INFO_PRODUCTNAME "Tango for Claude"
 !endif
 !ifndef INFO_PRODUCTVERSION
     !define INFO_PRODUCTVERSION "0.1.0"
 !endif
 !ifndef INFO_COPYRIGHT
-    !define INFO_COPYRIGHT "(c) 2026, Tandem for Claude contributors. MIT licence."
+    !define INFO_COPYRIGHT "(c) 2026, Tango for Claude contributors. MIT licence."
 !endif
 !ifndef PRODUCT_EXECUTABLE
     !define PRODUCT_EXECUTABLE "${INFO_PROJECTNAME}.exe"

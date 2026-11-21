@@ -112,7 +112,7 @@ func addTree(tw *tar.Writer, root, prefix string) error {
 		case d.IsDir():
 			return tw.WriteHeader(&tar.Header{Typeflag: tar.TypeDir, Name: name + "/", Mode: 0o700, ModTime: info.ModTime()})
 		case info.Mode().IsRegular():
-			if strings.HasPrefix(d.Name(), tempPrefix) {
+			if strings.HasPrefix(d.Name(), tempPrefix) || strings.HasPrefix(d.Name(), oldTempPrefix) {
 				return nil
 			}
 			if err := tw.WriteHeader(&tar.Header{Typeflag: tar.TypeReg, Name: name, Mode: 0o600, Size: info.Size(), ModTime: info.ModTime()}); err != nil {

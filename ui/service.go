@@ -7,8 +7,8 @@ import (
 	"log/slog"
 	"time"
 
-	"github.com/naseebnaushad/tandem-for-claude/internal/app"
-	"github.com/naseebnaushad/tandem-for-claude/internal/domain"
+	"github.com/naseebnaushad/tango-for-claude/internal/app"
+	"github.com/naseebnaushad/tango-for-claude/internal/domain"
 )
 
 // Service is bound to the page; each exported method is callable from it.

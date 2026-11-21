@@ -1,4 +1,4 @@
-// Draws the Tandem for Claude icons with CoreGraphics (no extra tools needed).
+// Draws the Tango for Claude icons with CoreGraphics (no extra tools needed).
 // Usage: swift draw.swift <outdir>
 // Writes appicon.png (1024x1024), tray-template.png (44x44, black on clear,
 // for macOS) and tray.png (44x44, white-on-coral, for Windows/Linux).

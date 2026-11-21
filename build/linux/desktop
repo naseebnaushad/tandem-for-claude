@@ -1,13 +1,13 @@
 [Desktop Entry]
 Version=1.0
-Name=Tandem for Claude
+Name=Tango for Claude
 Comment=Use several Claude seats side by side and keep every Code-tab chat
 # The Exec line includes %u to pass the URL to the application
-Exec=/usr/local/bin/tandem %u
+Exec=/usr/local/bin/tango %u
 Terminal=false
 Type=Application
-Icon=tandem
+Icon=tango
 Categories=Utility;
-StartupWMClass=tandem
+StartupWMClass=tango
 
  

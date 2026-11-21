@@ -6,10 +6,10 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/naseebnaushad/tandem-for-claude/internal/adapters/fsstore"
-	"github.com/naseebnaushad/tandem-for-claude/internal/adapters/platform"
-	"github.com/naseebnaushad/tandem-for-claude/internal/app"
-	"github.com/naseebnaushad/tandem-for-claude/internal/ports"
+	"github.com/naseebnaushad/tango-for-claude/internal/adapters/fsstore"
+	"github.com/naseebnaushad/tango-for-claude/internal/adapters/platform"
+	"github.com/naseebnaushad/tango-for-claude/internal/app"
+	"github.com/naseebnaushad/tango-for-claude/internal/ports"
 )
 
 // Environment variables that override the default folders (see .env.example).
@@ -63,3 +63,7 @@ func envOr(key, def string) string {
 // LegacyAgentRemover is implemented by platforms that can remove the old
 // Python tool's background job (macOS).
 type LegacyAgentRemover interface{ RemoveLegacyAgent() bool }
+
+// OldAutostartMigrator is implemented by every platform: it moves start at
+// login from the app's old name ("Tandem for Claude") to this one.
+type OldAutostartMigrator interface{ MigrateOldAutostart(exe string) bool }

@@ -15,7 +15,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/naseebnaushad/tandem-for-claude/internal/ports"
+	"github.com/naseebnaushad/tango-for-claude/internal/ports"
 )
 
 var desktopNames = []string{"claude-desktop", "Claude", "claude-desktop-bin"}
@@ -166,7 +166,18 @@ func (l Linux) OpenCLI(configDir string) error {
 }
 
 func (l Linux) autostartPath() string {
-	return filepath.Join(l.configHome(), "autostart", "tandem-for-claude.desktop")
+	return filepath.Join(l.configHome(), "autostart", "tango-for-claude.desktop")
+}
+
+// MigrateOldAutostart replaces the autostart entry of the app's old name
+// ("Tandem for Claude", 0.1.0-beta.1) with one for this app. True if it found one.
+func (l Linux) MigrateOldAutostart(exe string) bool {
+	old := filepath.Join(l.configHome(), "autostart", "tandem-for-claude.desktop")
+	if !exists(old) {
+		return false
+	}
+	_ = os.Remove(old)
+	return l.SetAutostart(true, exe) == nil
 }
 
 // SetAutostart writes or removes an XDG autostart entry.
@@ -181,7 +192,7 @@ func (l Linux) SetAutostart(enable bool, exe string) error {
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
 		return err
 	}
-	entry := "[Desktop Entry]\nType=Application\nName=Tandem for Claude\nExec=" +
+	entry := "[Desktop Entry]\nType=Application\nName=Tango for Claude\nExec=" +
 		strconv.Quote(exe) + " --background\nX-GNOME-Autostart-enabled=true\n"
 	return os.WriteFile(path, []byte(entry), 0o644)
 }
