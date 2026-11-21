@@ -22,5 +22,5 @@ frontend/bindings/
 *.syso
 build/windows/nsis/MicrosoftEdgeWebview2Setup.exe
 build/linux/appimage/build/
-dist-*
+/dist/
 .task/
